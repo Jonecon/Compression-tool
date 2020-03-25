@@ -67,7 +67,7 @@ class LZWdecode{
             while((line = in.readLine()) != null){
                 
                 n = Integer.parseInt(line);
-                inputKey = (char)n;
+                inputKey = n;
 
                 phraseNums.add((int)inputKey);
                 mistMatchChars.add(null);
@@ -82,7 +82,7 @@ class LZWdecode{
             }
 
             
-
+            System.out.flush();
             in.close();
         }
         catch(Exception e){
