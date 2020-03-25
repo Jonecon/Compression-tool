@@ -55,7 +55,7 @@ class LZWdecode{
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
             //BufferedReader in = new BufferedReader(new FileReader(System.in));
             int n;
-            char inputKey;
+            int inputKey;
             char misMatchChar;
             String line;  
   
@@ -66,8 +66,8 @@ class LZWdecode{
             
             while((line = in.readLine()) != null){
                 
-                n = Integer.parseInt(line);
-                inputKey = n;
+                inputKey = Integer.parseInt(line);
+                
 
                 phraseNums.add((int)inputKey);
                 mistMatchChars.add(null);
