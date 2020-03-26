@@ -49,14 +49,14 @@ class LZWpack{
                     System.out.write(bitsInPacker);
                 }
  
-                if((phraseLength + 1) == (initialPhraseLength + initialPhraseLength)){
+                if((phraseLength + 1) == (initialPhraseLength * 2)){
                     bitsNeededForPhrase++;
                     initialPhraseLength = ((phraseLength + 1) * 2);
                 }
                 phraseLength++;
                 
             }           
-
+            System.out.flush();
             in.close();
         }
         catch(Exception e){
