@@ -41,12 +41,11 @@ class LZWpack{
                     //System.out.println(output);
                     output = output >> 24;
                     outputByte = (byte)output;
-                    //System.out.println(outputByte);
+                    System.out.print(outputByte);
                     output = 0;
                     //Adjusting bits in packer
                     bitsInPacker = bitsInPacker - 8; 
                     packingBit = packingBit << 8;
-                    System.out.write(bitsInPacker);
                 }
  
                 if((phraseLength + 1) == (initialPhraseLength * 2)){
