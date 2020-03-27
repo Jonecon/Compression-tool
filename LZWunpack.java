@@ -22,53 +22,56 @@ public class LZWunpack{
             		int outputTest = 0;
             		int mask;
             		int leftOver = 0;
+            		int bitsCounted = 0;
+            		int byteSize = 8;
+            		
+            		int count = 0;
             
             
             		while((line = byteReader.read()) != -1){ 
+            			bitsCounted += byteSize;
             			//Setting up mask
             			mask = calcMask(bitsNeededForPhrase);
             			
-            			System.out.println("The mask is: "+mask);
+            			//System.out.println("The mask is: "+mask);
             			
-            			input = 0;
             			input = line << shift;
             			unpack = unpack | input;
-            			shift -= 8;
-            			bitsLeft -= 8;
+            			shift -= byteSize;
+            			bitsLeft -= byteSize;
 
 				
 				while (bitsLeft > 0){
-					if (bitsLeft < 8)
-						leftOver = 8 - bitsLeft;
-					
 					line = byteReader.read();
+					bitsCounted += byteSize;
 					input = line << shift;
 					unpack = unpack | input;
-					bitsLeft -= 8;
-					shift -= 8;
+					bitsLeft -= byteSize;
+					shift -= byteSize;
 				}
 				
+				bitsCounted -= bitsNeededForPhrase;
 				output = unpack & mask;
 				unpack = unpack << bitsNeededForPhrase;
 				shift = startOfBitInput - bitsNeededForPhrase;
-				System.out.println("Output before shift: " + output);
-				System.out.println("Shifts output to the right: " + shift + " bits");
-				output >>= shift;
-				outputTest = 0x00000000;
-				outputTest = outputTest | output;
+				//System.out.println("Output before shift: " + output);
+				//System.out.println("unpack leftover value: " + unpack);
+				//System.out.println("Leftover value: " + leftOver);
+				//System.out.println("Shifts output to the right: " + shift + " bits");
+				output = output >>> shift;
 				
- 				System.out.println("Unpacked int: " + outputTest);
- 				System.out.println();
+ 				System.out.println(output);
  
                 		if((phraseLength + 1) == (initialPhraseLength * 2)){
                     			bitsNeededForPhrase++;
                     			initialPhraseLength = ((phraseLength + 1) * 2);
                 		}
                 		phraseLength++;
-                		bitsLeft = bitsNeededForPhrase;
-                		shift = 24 - leftOver;
+                		bitsLeft = bitsNeededForPhrase - bitsCounted;
+                		shift = 24 - bitsCounted;
+                		count++;
                 		
-            		}           
+            		}        
             		System.out.flush();
             		byteReader.close();
         	}
