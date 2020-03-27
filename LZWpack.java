@@ -1,6 +1,6 @@
 import java.io.*;
 
-class LZWpack{
+public class LZWpack{
 
     public static void main (String[] args)
 	{
@@ -39,15 +39,15 @@ class LZWpack{
                     //Output
                     output = packingBit & outputMask;
                     //System.out.println(output);
-                    output = output >> 24;
+                    output = output >>> 24;
                     outputByte = (byte)output;
-                    System.out.print(outputByte);
+                    System.out.write(outputByte);
                     output = 0;
                     //Adjusting bits in packer
                     bitsInPacker = bitsInPacker - 8; 
                     packingBit = packingBit << 8;
                 }
- 
+                
                 if((phraseLength + 1) == (initialPhraseLength * 2)){
                     bitsNeededForPhrase++;
                     initialPhraseLength = ((phraseLength + 1) * 2);
@@ -59,7 +59,7 @@ class LZWpack{
             in.close();
         }
         catch(Exception e){
-            System.out.println(e);
+            System.out.println("Error: " + e);
         }
 
         
