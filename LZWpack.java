@@ -1,3 +1,6 @@
+//Name: Connor Jones, Mason Elliott
+//ID: 1351782, 1347257
+
 import java.io.*;
 
 public class LZWpack{
@@ -50,11 +53,19 @@ public class LZWpack{
                 
                 if((phraseLength + 1) == (initialPhraseLength * 2)){
                     bitsNeededForPhrase++;
-                    initialPhraseLength = ((phraseLength + 1) * 2);
+                    initialPhraseLength = ((phraseLength + 1));
                 }
                 phraseLength++;
                 
-            }           
+            } 
+            
+            if (bitsInPacker > 0){
+            	output = packingBit & outputMask;
+            	output = output >>> 24;
+                outputByte = (byte)output;
+                System.out.write(outputByte);
+            }
+                      
             System.out.flush();
             in.close();
         }

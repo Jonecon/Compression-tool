@@ -1,3 +1,6 @@
+//Name: Connor Jones, Mason Elliott
+//ID: 1351782, 1347257
+
 import java.io.*;
 
 public class LZWunpack{
@@ -33,8 +36,6 @@ public class LZWunpack{
             			//Setting up mask
             			mask = calcMask(bitsNeededForPhrase);
             			
-            			//System.out.println("The mask is: "+mask);
-            			
             			input = line << shift;
             			unpack = unpack | input;
             			shift -= byteSize;
@@ -54,24 +55,31 @@ public class LZWunpack{
 				output = unpack & mask;
 				unpack = unpack << bitsNeededForPhrase;
 				shift = startOfBitInput - bitsNeededForPhrase;
-				//System.out.println("Output before shift: " + output);
-				//System.out.println("unpack leftover value: " + unpack);
-				//System.out.println("Leftover value: " + leftOver);
-				//System.out.println("Shifts output to the right: " + shift + " bits");
 				output = output >>> shift;
 				
  				System.out.println(output);
  
                 		if((phraseLength + 1) == (initialPhraseLength * 2)){
                     			bitsNeededForPhrase++;
-                    			initialPhraseLength = ((phraseLength + 1) * 2);
+                    			initialPhraseLength = ((phraseLength + 1));
                 		}
                 		phraseLength++;
+                		
                 		bitsLeft = bitsNeededForPhrase - bitsCounted;
                 		shift = 24 - bitsCounted;
                 		count++;
                 		
-            		}        
+            		}
+            		
+            		if (unpack != 0){
+            			//System.out.println("unpack value is: " + unpack);
+            			mask = calcMask(bitsNeededForPhrase);
+            			output = unpack & mask;
+            			output = output >>> shift;
+            			System.out.println(output);
+            		}
+            			
+      
             		System.out.flush();
             		byteReader.close();
         	}
