@@ -33,7 +33,7 @@ class LZWdecode{
 
     private void printStack(){
         while(stack.returnHead() != null){
-            System.out.print(stack.pop());
+            System.out.write(stack.pop());
         }
     }
 
@@ -73,7 +73,7 @@ class LZWdecode{
                 mistMatchChars.add(null);
                 misMatchChar = FindMisMatch(inputKey);
 
-                if(phraseNums.size() > 256){
+                if(phraseNums.size() > 257){
                     mistMatchChars.set(mistMatchChars.size() - 2, misMatchChar);
                 }
             

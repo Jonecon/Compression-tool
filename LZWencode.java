@@ -33,6 +33,8 @@ public class LZWencode{
 			
 			//While there are bytes to process.
 			while((c = byteStream.read()) != -1){
+				//System.out.println("Char: " + c);
+				//System.out.println("Byte: " + (byte)c);
 			
 				//Add the byte to the list for pattern processing.
 				key.add((byte)c);
@@ -68,6 +70,7 @@ public class LZWencode{
 			byteStream.close();
 		}
 		catch (Exception ex){
+			System.out.print(ex);
 		}
 	}
 }

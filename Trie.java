@@ -51,22 +51,23 @@ public class Trie{
 		int pos;
 		byte keyCurr;
 		int size = key.size();
+		int res;
 		//For every byte in this list, go down the trie until you find the missmatch, then insert.
 		for (int i = 0; i < size; i++){
-			keyCurr = key.get(i);		
-			//Fuck me in the ass and call me a donkey
+			keyCurr = key.get(i);
 			
-			if (size - 1 == i){
+			if (i == (size - 1)){
 				while (currNode.nextNode != null)
 					currNode = currNode.nextNode;
 				currNode.nextNode = new Node(keyCurr);
 				return;
 			}
 			
-			while (currNode.nextNode != null){
-				int res = Byte.compare(keyCurr, currNode.contains);
+			while (currNode != null){
+				res = Byte.compare(keyCurr, currNode.contains);
+				
 				if (res == 0 && currNode.nextLevel == null){
-					currNode.nextLevel = new Node(key.get(key.size() - 1));
+					currNode.nextLevel = new Node(key.get(size - 1));
 					return;
 				}
 				
@@ -76,7 +77,7 @@ public class Trie{
 				}
 				
 				currNode = currNode.nextNode;
-			}
+			}	
 		}
 	}
 	
@@ -86,8 +87,6 @@ public class Trie{
 		int size = key.size();
 		for(int i = 0; i < size; i++){
 			keyCurr = key.get(i);
-			//Shit cunt mother fucker.
-			
 			currNode = searchLevel(keyCurr, currNode);
 			
 			if (currNode == null)
@@ -106,9 +105,9 @@ public class Trie{
 	}
 	
 	public Node searchLevel(byte key, Node curr){
-		
-		while (curr.nextNode != null){
-			int res = Byte.compare(key, curr.contains);
+		int res;
+		while (curr != null){
+			res = Byte.compare(key, curr.contains);
 			if (res == 0)
 				return curr;
 			curr = curr.nextNode;
