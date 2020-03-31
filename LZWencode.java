@@ -33,9 +33,6 @@ public class LZWencode{
 			
 			//While there are bytes to process.
 			while((c = byteStream.read()) != -1){
-				//System.out.println("Char: " + c);
-				//System.out.println("Byte: " + (byte)c);
-			
 				//Add the byte to the list for pattern processing.
 				key.add((byte)c);
 				
@@ -63,7 +60,7 @@ public class LZWencode{
 				//The pattern has been found, so make this the current phrase number.
 				phraseNum = index;
 			}
-			//System.out.println("--------");
+			//Print out the leftover key.
 			System.out.println(index);
 			
 			//Close the stream.
