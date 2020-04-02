@@ -2,6 +2,7 @@
 //ID: 1351782, 1347257
 
 import java.io.*;
+import java.lang.Math;
 
 public class LZWunpack{
 
@@ -10,30 +11,22 @@ public class LZWunpack{
         	try{
         		//Setup
             		BufferedInputStream byteReader = new BufferedInputStream(System.in);
-    	   		int initialPhraseLength = 128;
-			int phraseLength = 255;
+            		final int BYTESIZE = 8;
+            		final int STARTINPUT = 32;
+            		
+			int phraseLength = 256;
 			int bitsPhrase = 8;
-            		int inputBit;
-           		int startOfBitInput = 32;
           		int line;  
   			int bitsLeft = bitsPhrase;
   			int shift = 24;
   			int input;
             		int unpack = 0;
-            		int output;
-            		int outputTest = 0;
-            		int mask;
-            		int leftOver = 0;
             		int bitsCounted = 0;
-            		int byteSize = 8;
             
             		//while there are bytes to read.
             		while((line = byteReader.read()) != -1){ 
             			//Increase the amount of bits counted by a byte
-            			bitsCounted += byteSize;
-            			
-            			//Setting up mask
-            			//mask = calcMask(bitsPhrase);
+            			bitsCounted += BYTESIZE;
             			
             			//Shift the input left to prepare to be packed.
             			input = line << shift;
@@ -42,10 +35,10 @@ public class LZWunpack{
             			unpack = unpack | input;
             			
             			//Adjust shift for the next number.
-            			shift -= byteSize;
+            			shift -= BYTESIZE;
             			
             			//Decrease the bits left needed for the phrasenumber. 
-            			bitsLeft -= byteSize;
+            			bitsLeft -= BYTESIZE;
 
 				//While you still need more bits for the phrase number
 				while (bitsLeft > 0){
@@ -53,7 +46,7 @@ public class LZWunpack{
 					line = byteReader.read();
 					
 					//Increase bits counted
-					bitsCounted += byteSize;
+					bitsCounted += BYTESIZE;
 					
 					//shift the input to prepare to be packed
 					input = line << shift;
@@ -62,31 +55,30 @@ public class LZWunpack{
 					unpack = unpack | input;
 					
 					//Decrease bitsLeft by another byte
-					bitsLeft -= byteSize;
+					bitsLeft -= BYTESIZE;
 					
 					//Decrease shit by another byte.
-					shift -= byteSize;
+					shift -= BYTESIZE;
 				}
 				
 				//Since we now have enough bits to output the phrase number decrease bits counted by this phrase number bit size.
 				bitsCounted -= bitsPhrase;
 				
 				//Calculate how much we need to shift output to the right.
-				shift = startOfBitInput - bitsPhrase;
+				shift = STARTINPUT - bitsPhrase;
 				
 				//Output the phrase number.
  				output(bitsPhrase, shift, unpack);
  				
  				//Remove the output from the unpacker
  				unpack = unpack << bitsPhrase;
- 				
- 				//If the number has doubled increase the amount of bits needed for the phrasenumber by 1.
-                		if((phraseLength + 1) == (initialPhraseLength * 2)){
-                    			bitsPhrase++;
-                    			initialPhraseLength = ((phraseLength + 1));
-                		}
+                		
                 		//Increase the amount of phrase numbers we have now read.
                 		phraseLength++;
+                		
+                		//Calculate bits needed.
+                		bitsPhrase = (int)(Math.ceil(Math.log(phraseLength) / Math.log(2))); 
+                		
                 		//See how many bits we need to read next loop taking into account what is already in the unpacker int
                 		bitsLeft = bitsPhrase - bitsCounted;
                 		//Setup shift for the next loop.
