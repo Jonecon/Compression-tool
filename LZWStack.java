@@ -1,5 +1,5 @@
-//Name: Connor Jones, Mason Elliott
-//ID: 1351782, 1347257
+//Connor Jones, Mason Elliott
+
 
 public class LZWStack{
 
